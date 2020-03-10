@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">IFTTW</string>
+    <string name="tab_text_1">New Routine</string>
+    <string name="tab_text_2">Routine List</string>
+    <string name="new_routine_text1">IF</string>
+    <string name="new_routine_button1_text">THIS</string>
+    <string name="new_routine_text2">THEN</string>
+    <string name="new_routine_button2_text">WHAT?</string>
+</resources>
