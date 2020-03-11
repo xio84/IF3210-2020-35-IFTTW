@@ -11,7 +11,7 @@
         android:id="@+id/textView"
         android:layout_width="115dp"
         android:layout_height="68dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:gravity="center"
         android:text="@string/new_routine_text1"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -25,7 +25,7 @@
         android:id="@+id/textView2"
         android:layout_width="115dp"
         android:layout_height="68dp"
-        android:layout_marginTop="276dp"
+        android:layout_marginTop="272dp"
         android:gravity="center"
         android:text="@string/new_routine_text2"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -36,10 +36,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/whatButton"
         android:layout_width="141dp"
         android:layout_height="65dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="396dp"
+        android:background="#F44336"
+        android:text="@string/new_routine_button2_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#1C2463"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/thisButton"
+        android:layout_width="141dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="156dp"
         android:background="#F44336"
         android:text="@string/new_routine_button1_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -49,17 +63,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="141dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="400dp"
-        android:background="#F44336"
-        android:text="@string/new_routine_button2_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#1C2463"
-        android:textStyle="bold"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="#C7EBA9"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.922"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/whatButton"
+        app:layout_constraintVertical_bias="0.034"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="275dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/routine_name_text"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.267"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/whatButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

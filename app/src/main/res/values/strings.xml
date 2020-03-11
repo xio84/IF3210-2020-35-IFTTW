@@ -2,8 +2,17 @@
     <string name="app_name">IFTTW</string>
     <string name="tab_text_1">New Routine</string>
     <string name="tab_text_2">Routine List</string>
+    <string name="action_module_name_1">Notify Me</string>
+    <string name="action_module_name_2">Turn WiFi On/Off</string>
+    <string name="action_module_name_3">API</string>
+    <string name="condition_module_name_1">Timer</string>
+    <string name="condition_module_name_2">Sensors</string>
+    <string name="condition_module_name_3">API</string>
     <string name="new_routine_text1">IF</string>
     <string name="new_routine_button1_text">THIS</string>
     <string name="new_routine_text2">THEN</string>
     <string name="new_routine_button2_text">WHAT?</string>
+    <string name="routine_name_text">Routine Name</string>
+    <string name="select_action_module_text">Select Action Module</string>
+    <string name="select_condition_module_text">Select Condition Module</string>
 </resources>
