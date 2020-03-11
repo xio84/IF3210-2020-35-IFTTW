@@ -3,6 +3,7 @@ package com.pbd.ifttw.ui.main;
 import android.content.Context;
 
 import com.pbd.ifttw.R;
+import com.pbd.ifttw.ui.modules.SensorsModuleFragment;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -36,6 +37,8 @@ public class ConditionModulesPagerAdapter extends FragmentPagerAdapter {
 //        return PlaceholderFragment.newInstance(position + 1);
         switch (position){
             //TODO: Replace with Condition Modules Fragment
+            case 1:
+                return new SensorsModuleFragment();
             default:
                 return PlaceholderFragment.newInstance(position+1);
         }

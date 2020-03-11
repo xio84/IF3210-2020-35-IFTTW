@@ -1,21 +1,21 @@
 package com.pbd.ifttw;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
+import com.pbd.ifttw.ui.main.NewRoutineFragment;
 import com.pbd.ifttw.ui.main.SectionsPagerAdapter;
+import com.pbd.ifttw.ui.modules.SensorsModuleFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private Bundle data_bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +35,27 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Main Activity", "request code="+requestCode);
+        if (requestCode == NewRoutineFragment.CONDITION_REQUEST) {
+            if (resultCode == RESULT_OK && data != null) {
+                data_bundle = data.getExtras();
+                if (data_bundle != null) {
+                    Log.d("Main Activity", "GET: " +
+                            data_bundle.getString(SensorsModuleFragment.CONDITION_TYPE,
+                                    "Nothing"));
+                } else {
+                    Log.d("Main Activity", "Got Null!!");
+                }
+            }
+        }
+    }
+
+    public Bundle getData_bundle() {
+        return data_bundle;
     }
 }

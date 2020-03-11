@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/whatButton"
-        android:layout_width="141dp"
+        android:layout_width="wrap_content"
         android:layout_height="65dp"
         android:layout_marginTop="396dp"
         android:background="#F44336"
@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/thisButton"
-        android:layout_width="141dp"
+        android:layout_width="wrap_content"
         android:layout_height="65dp"
         android:layout_marginTop="156dp"
         android:background="#F44336"
