@@ -15,4 +15,28 @@
     <string name="routine_name_text">Routine Name</string>
     <string name="select_action_module_text">Select Action Module</string>
     <string name="select_condition_module_text">Select Condition Module</string>
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+    <string-array name="timer_array">
+        <item>Once</item>
+        <item>Everyday</item>
+        <item>Weekly</item>
+    </string-array>
+
+    <string-array name="day_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+=======
+    <string name="routine_name_text">Routine Name</string>
+    <string name="select_action_module_text">Select Action Module</string>
+    <string name="select_condition_module_text">Select Condition Module</string>
+>>>>>>> master
+>>>>>>> Stashed changes
 </resources>
