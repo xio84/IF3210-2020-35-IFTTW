@@ -2,7 +2,6 @@ package com.pbd.ifttw;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
@@ -10,11 +9,8 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.pbd.ifttw.ui.main.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.d("Main Activity", "Got Null!!");
                 }
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(view);
             }
         }
         if (requestCode == NewRoutineFragment.ACTION_REQUEST) {
@@ -73,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, Timer.class);
-        startActivity(intent);
     }
 
     @Override
