@@ -1,9 +1,10 @@
-package com.pbd.ifttw.ui.main;
+package com.pbd.ifttw.ui.adapter;
 
 import android.content.Context;
 
 import com.pbd.ifttw.R;
-import com.pbd.ifttw.ui.modules.WiFiModuleFragment;
+import com.pbd.ifttw.ui.main.PlaceholderFragment;
+import com.pbd.ifttw.ui.modules.SensorsModuleFragment;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -15,17 +16,17 @@ import androidx.fragment.app.FragmentPagerAdapter;
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class ActionModulesPagerAdapter extends FragmentPagerAdapter {
+public class ConditionModulesPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{
-            R.string.action_module_name_1,
-            R.string.action_module_name_2,
-            R.string.action_module_name_3
+            R.string.condition_module_name_1,
+            R.string.condition_module_name_2,
+            R.string.condition_module_name_3
     };
     private final Context mContext;
 
-    public ActionModulesPagerAdapter(Context context, FragmentManager fm) {
+    public ConditionModulesPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -36,9 +37,9 @@ public class ActionModulesPagerAdapter extends FragmentPagerAdapter {
         // Return a PlaceholderFragment (defined as a static inner class below).
 //        return PlaceholderFragment.newInstance(position + 1);
         switch (position){
-            //TODO: Replace with Action Modules Fragment
+            //TODO: Replace with Condition Modules Fragment
             case 1:
-                return new WiFiModuleFragment();
+                return new SensorsModuleFragment();
             default:
                 return PlaceholderFragment.newInstance(position+1);
         }

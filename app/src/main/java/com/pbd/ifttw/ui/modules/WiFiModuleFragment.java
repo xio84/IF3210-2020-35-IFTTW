@@ -33,7 +33,7 @@ public class WiFiModuleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 b.putString(NewRoutineFragment.ACTION_TYPE, "wifi");
-                b.putInt(NewRoutineFragment.ACTION_VALUE, 1);
+                b.putString(NewRoutineFragment.ACTION_VALUE, "1");
                 returnData(v);
             }
         });
@@ -42,7 +42,7 @@ public class WiFiModuleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 b.putString(NewRoutineFragment.ACTION_TYPE, "wifi");
-                b.putInt(NewRoutineFragment.ACTION_VALUE, 0);
+                b.putString(NewRoutineFragment.ACTION_VALUE, "0");
                 returnData(v);
             }
         });

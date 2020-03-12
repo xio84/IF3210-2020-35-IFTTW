@@ -3,7 +3,7 @@ package com.pbd.ifttw;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
-import com.pbd.ifttw.ui.main.ActionModulesPagerAdapter;
+import com.pbd.ifttw.ui.adapter.ActionModulesPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;

@@ -37,7 +37,7 @@ public class SensorsModuleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 b.putString(NewRoutineFragment.CONDITION_TYPE, "proximity");
-                b.putInt(NewRoutineFragment.CONDITION_VALUE, 0);
+                b.putString(NewRoutineFragment.CONDITION_VALUE, "0");
                 returnData(v);
             }
         });
@@ -46,7 +46,7 @@ public class SensorsModuleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 b.putString(NewRoutineFragment.CONDITION_TYPE, "proximity");
-                b.putInt(NewRoutineFragment.CONDITION_VALUE, 1);
+                b.putString(NewRoutineFragment.CONDITION_VALUE, "1");
                 returnData(v);
             }
         });
