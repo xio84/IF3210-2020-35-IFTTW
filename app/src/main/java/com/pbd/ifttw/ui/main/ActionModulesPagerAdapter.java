@@ -3,6 +3,7 @@ package com.pbd.ifttw.ui.main;
 import android.content.Context;
 
 import com.pbd.ifttw.R;
+import com.pbd.ifttw.ui.modules.WiFiModuleFragment;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -36,6 +37,8 @@ public class ActionModulesPagerAdapter extends FragmentPagerAdapter {
 //        return PlaceholderFragment.newInstance(position + 1);
         switch (position){
             //TODO: Replace with Action Modules Fragment
+            case 1:
+                return new WiFiModuleFragment();
             default:
                 return PlaceholderFragment.newInstance(position+1);
         }
