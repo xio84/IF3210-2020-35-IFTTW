@@ -15,13 +15,17 @@
     <string name="routine_name_text">Routine Name</string>
     <string name="select_action_module_text">Select Action Module</string>
     <string name="select_condition_module_text">Select Condition Module</string>
-    <string name="proximity_is">Proximity is...</string>
+    <string name="proximity_is">Proximity is…</string>
     <string name="near">Near</string>
     <string name="far">Far</string>
     <string name="something">SOMETHING</string>
     <string name="is"> IS </string>
     <string name="wrong">WRONG</string>
     <string name="accelerometer_isn_t_supported_yet">Accelerometer isn\'t supported (yet)</string>
+    <string name="turn_wifi">Turn WiFi</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="made_with_love"><![CDATA[Made with <3]]></string>
     <string-array name="timer_array">
         <item>Once</item>
         <item>Everyday</item>

@@ -12,14 +12,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
 import com.pbd.ifttw.ui.main.SectionsPagerAdapter;
-import com.pbd.ifttw.ui.modules.SensorsModuleFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private Bundle data_bundle = new Bundle();
+    private final String CONDITION_BUNDLE_KEY = "CBK";
+    private Bundle condition_bundle = null;
+    private final String ACTION_BUNDLE_KEY = "ABK";
+    private Bundle action_bundle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            condition_bundle = savedInstanceState.getBundle(CONDITION_BUNDLE_KEY);
+        } else {
+            Log.d("Main Activity", "savedInstanceState is null");
+        }
+
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -34,10 +43,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Main Activity", "request code="+requestCode);
         if (requestCode == NewRoutineFragment.CONDITION_REQUEST) {
             if (resultCode == RESULT_OK && data != null) {
-                data_bundle = data.getExtras();
-                if (data_bundle != null) {
+                condition_bundle = data.getExtras();
+                if (condition_bundle != null) {
                     Log.d("Main Activity", "GET: " +
-                            data_bundle.getString(SensorsModuleFragment.CONDITION_TYPE,
+                            condition_bundle.getString(NewRoutineFragment.CONDITION_TYPE,
+                                    "Nothing"));
+                } else {
+                    Log.d("Main Activity", "Got Null!!");
+                }
+            }
+        }
+        if (requestCode == NewRoutineFragment.ACTION_REQUEST) {
+            if (resultCode == RESULT_OK && data != null) {
+                action_bundle = data.getExtras();
+                if (action_bundle != null) {
+                    Log.d("Main Activity", "GET: " +
+                            action_bundle.getString(NewRoutineFragment.ACTION_TYPE,
                                     "Nothing"));
                 } else {
                     Log.d("Main Activity", "Got Null!!");
@@ -46,7 +67,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public Bundle getData_bundle() {
-        return data_bundle;
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBundle(CONDITION_BUNDLE_KEY, condition_bundle);
+        Log.d("Main Activity", "Saving Out_State");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Nullable
+    public Bundle getCondition_bundle() {
+        return condition_bundle;
+    }
+
+    @Nullable
+    public Bundle getAction_bundle() {
+        return action_bundle;
     }
 }

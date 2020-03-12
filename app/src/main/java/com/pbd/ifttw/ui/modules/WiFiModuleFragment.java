@@ -8,22 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
-import com.pbd.ifttw.ui.main.PageViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SensorsModuleFragment extends Fragment {
+public class WiFiModuleFragment extends Fragment {
 
     private Bundle b = new Bundle();
 
@@ -31,22 +27,22 @@ public class SensorsModuleFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_sensors, container, false);
-        Button near = root.findViewById(R.id.nearButton);
+        View root = inflater.inflate(R.layout.fragment_wifi, container, false);
+        Button near = root.findViewById(R.id.onButton);
         near.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                b.putString(NewRoutineFragment.CONDITION_TYPE, "proximity");
-                b.putInt(NewRoutineFragment.CONDITION_VALUE, 0);
+                b.putString(NewRoutineFragment.ACTION_TYPE, "wifi");
+                b.putInt(NewRoutineFragment.ACTION_VALUE, 1);
                 returnData(v);
             }
         });
-        Button far = root.findViewById(R.id.farButton);
+        Button far = root.findViewById(R.id.offButton);
         far.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                b.putString(NewRoutineFragment.CONDITION_TYPE, "proximity");
-                b.putInt(NewRoutineFragment.CONDITION_VALUE, 1);
+                b.putString(NewRoutineFragment.ACTION_TYPE, "wifi");
+                b.putInt(NewRoutineFragment.ACTION_VALUE, 0);
                 returnData(v);
             }
         });
@@ -60,14 +56,14 @@ public class SensorsModuleFragment extends Fragment {
         // Get parent activity
         Activity parent = getActivity();
         if (parent != null) {
-            Log.d("Sensors Module", "Sending...");
+            Log.d("WiFI Module", "Sending...");
             // Set parent activity result to RESULT_OK
             parent.setResult(Activity.RESULT_OK, replyIntent);
             // Finish parent activity
             parent.finish();
         } else {
             // Error happened, report!
-            Log.d("Sensors","Can't find activity!");
+            Log.d("WiFi","Can't find activity!");
         }
     }
 }
