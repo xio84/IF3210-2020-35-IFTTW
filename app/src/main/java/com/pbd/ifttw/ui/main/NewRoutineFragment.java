@@ -11,13 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pbd.ifttw.MainActivity;
 import com.pbd.ifttw.NewActionModuleActivity;
 import com.pbd.ifttw.NewConditionModuleActivity;
 import com.pbd.ifttw.R;
+import com.pbd.ifttw.database.Routine;
+import com.pbd.ifttw.database.SQLiteRoutineDatabaseHelper;
 import com.pbd.ifttw.service.SensorBackgroundService;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,11 +40,12 @@ public class NewRoutineFragment extends Fragment {
     public static final String ACTION_VALUE = "action_value";
     private String condition_type = "NONE";
     private String action_type = "NONE";
-    private Integer condition_value = null;
-    private Integer action_value = null;
+    private String condition_value = "NONE";
+    private String action_value = "NONE";
     private String routine_name = null;
 
     private View root;
+    private MainActivity parent;
 
     @Override
     public View onCreateView(
@@ -65,22 +73,21 @@ public class NewRoutineFragment extends Fragment {
                 addRoutine(v);
             }
         });
-        MainActivity parent = (MainActivity) getActivity();
-        setButtonText(parent);
+        parent = (MainActivity) getActivity();
+        setButtonText();
         return root;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity parent = (MainActivity) getActivity();
-        setButtonText(parent);
+        parent = (MainActivity) getActivity();
+        setButtonText();
     }
 
     private void launchNewConditionModuleActivity(@Nullable View view) {
         Log.d(LOG_TAG, "This button Clicked!");
         Intent intent = new Intent(getActivity(), NewConditionModuleActivity.class);
-        Activity parent = getActivity();
         if (parent != null) {
             parent.startActivityForResult(intent, CONDITION_REQUEST);
         } else {
@@ -91,7 +98,6 @@ public class NewRoutineFragment extends Fragment {
     private void launchNewActionModuleActivity(@Nullable View view) {
         Log.d(LOG_TAG, "What button Clicked!");
         Intent intent = new Intent(getActivity(), NewActionModuleActivity.class);
-        Activity parent = getActivity();
         if (parent != null) {
             parent.startActivityForResult(intent, ACTION_REQUEST);
         } else {
@@ -99,7 +105,7 @@ public class NewRoutineFragment extends Fragment {
         }
     }
 
-    private void setButtonText(@Nullable MainActivity parent) {
+    private void setButtonText() {
         // Set text of main activity
         if (parent != null) {
             // Handle THIS button text
@@ -111,12 +117,12 @@ public class NewRoutineFragment extends Fragment {
                     // Handle Proximity module
                     if (condition_type.equals("proximity")) {
                         String valString;
-                        condition_value = condition_bundle.getInt(CONDITION_VALUE, -1);
+                        condition_value = condition_bundle.getString(CONDITION_VALUE, "NONE");
                         switch (condition_value) {
-                            case 0:
+                            case "0":
                                 valString = "Proximity is Near";
                                 break;
-                            case 1:
+                            case "1":
                                 valString = "Proximity is Far";
                                 break;
                             default:
@@ -125,6 +131,8 @@ public class NewRoutineFragment extends Fragment {
                         thisButton.setText(valString);
                     }
                 }
+            } else {
+                thisButton.setText(R.string.new_routine_button1_text);
             }
             // Handle WHAT Button
             Bundle action_bundle = parent.getAction_bundle();
@@ -135,12 +143,12 @@ public class NewRoutineFragment extends Fragment {
                     //Handle WiFi module
                     if (action_type.equals("wifi")) {
                         String valString;
-                        action_value = action_bundle.getInt(ACTION_VALUE, -1);
+                        action_value = action_bundle.getString(ACTION_VALUE, "NONE");
                         switch (action_value) {
-                            case 0:
+                            case "0":
                                 valString = "Turn Wifi Off";
                                 break;
-                            case 1:
+                            case "1":
                                 valString = "Turn Wifi On";
                                 break;
                             default:
@@ -149,6 +157,8 @@ public class NewRoutineFragment extends Fragment {
                         whatButton.setText(valString);
                     }
                 }
+            } else {
+                whatButton.setText(R.string.new_routine_button2_text);
             }
         } else {
             Log.d("New Routine Fragment", "Parent is Null!");
@@ -156,14 +166,31 @@ public class NewRoutineFragment extends Fragment {
     }
 
     private void addRoutine(View v) {
-        if (!condition_type.equals("NONE") && !action_type.equals("NONE")) {
+        EditText name_input = root.findViewById(R.id.editText);
+        String name = name_input.getText().toString();
+        if (!condition_type.equals("NONE")
+                && !action_type.equals("NONE")
+                && !name.equals("")
+        ) {
+            SQLiteRoutineDatabaseHelper db = parent.getDb();
+            List<Routine> routineList = parent.getListRoutine();
+            Integer newIndex = Integer.parseInt(routineList.get(routineList.size()-1).getId()) + 1;
             if (condition_type.equals("proximity")) {
-                addSensorAlarmManager(v);
+                addSensorAlarmManager(v, newIndex);
+                db.addRoutine(new Routine(newIndex.toString(), name, condition_type, condition_value, action_type, action_value));
+                // Routine created notification
+                Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
+                // Clear all text
+                name_input.setText(null, TextView.BufferType.EDITABLE);
+                parent.setCondition_bundle(null);
+                parent.setAction_bundle(null);
+                setButtonText();
             }
+
         }
     }
 
-    private void addSensorAlarmManager(View v) {
+    private void addSensorAlarmManager(View v, int index) {
         if (getActivity() != null) {
             // get scheduler and prepare intent
             AlarmManager scheduler = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -171,9 +198,9 @@ public class NewRoutineFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString(CONDITION_TYPE, condition_type);
             args.putString(ACTION_TYPE, action_type);
-            args.putInt(CONDITION_VALUE, condition_value);
-            args.putInt(ACTION_VALUE, action_value);
-            if (condition_value == 0) {
+            args.putString(CONDITION_VALUE, condition_value);
+            args.putString(ACTION_VALUE, action_value);
+            if (condition_value.equals("0")) {
                 args.putFloat(SensorBackgroundService.KEY_THRESHOLD_MIN_VALUE, 1);
             } else {
                 args.putFloat(SensorBackgroundService.KEY_THRESHOLD_MAX_VALUE, 7);
@@ -186,7 +213,7 @@ public class NewRoutineFragment extends Fragment {
                 long interval;
                 interval = 1000L;
 
-                PendingIntent scheduledIntent = PendingIntent.getService(getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent scheduledIntent = PendingIntent.getService(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 // start the service
                 scheduler.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, scheduledIntent);

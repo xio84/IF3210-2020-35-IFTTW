@@ -43,8 +43,8 @@ public class SensorBackgroundService extends Service implements SensorEventListe
     /**
      * treshold values
      */
-    private float mThresholdMin, mThresholdMax, action_value;
-    private String action_type;
+    private float mThresholdMin, mThresholdMax;
+    private String action_type, action_value;
     private Bundle args;
 
     public static final String KEY_SENSOR_TYPE = "sensor_type";
@@ -79,7 +79,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
             mThresholdMin = args.containsKey(KEY_THRESHOLD_MIN_VALUE) ? args.getFloat(KEY_THRESHOLD_MIN_VALUE) : Float.MIN_VALUE;
             mThresholdMax = args.containsKey(KEY_THRESHOLD_MAX_VALUE) ? args.getFloat(KEY_THRESHOLD_MAX_VALUE) : Float.MAX_VALUE;
             action_type = args.getString(NewRoutineFragment.ACTION_TYPE, "NONE");
-            action_value = args.getInt(NewRoutineFragment.ACTION_VALUE, -1);
+            action_value = args.getString(NewRoutineFragment.ACTION_VALUE, "NONE");
         }
 
         // we need the light sensor
@@ -155,7 +155,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
         float sensorValue = event.values[0];
         Log.d(TAG, "Action type= " + action_type);
         if (action_type.equals("wifi")) {
-            if (action_value == 0) {
+            if (action_value.equals("0")) {
                 Log.d(TAG,"Near. sensorValue= " + sensorValue
                         + ", mThresholdMin= " + mThresholdMin
                         + ", mThresholdMax=" + mThresholdMax

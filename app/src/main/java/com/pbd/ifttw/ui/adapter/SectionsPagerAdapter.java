@@ -1,4 +1,4 @@
-package com.pbd.ifttw.ui.main;
+package com.pbd.ifttw.ui.adapter;
 
 import android.content.Context;
 
@@ -9,6 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.pbd.ifttw.R;
+import com.pbd.ifttw.ui.main.NewRoutineFragment;
+import com.pbd.ifttw.ui.main.PlaceholderFragment;
+import com.pbd.ifttw.ui.main.RoutineListFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -33,8 +36,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return new NewRoutineFragment();
+            case 1:
+                return new RoutineListFragment();
             default:
-                //TODO: Replace with Routine List Fragment
                 return PlaceholderFragment.newInstance(position+1);
         }
     }
