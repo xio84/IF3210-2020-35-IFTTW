@@ -24,6 +24,15 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent" />
 
+        <Button
+            android:id="@+id/delete_routine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:background="#FF0000"
+            android:text="@string/delete_routine_button" />
+
     </LinearLayout>
 
     <LinearLayout

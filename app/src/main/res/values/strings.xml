@@ -41,5 +41,6 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="made_with_love"><![CDATA[Made with <3]]></string>
+    <string name="delete_routine_button">Delete</string>
 
 </resources>

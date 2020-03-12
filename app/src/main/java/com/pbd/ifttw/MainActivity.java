@@ -20,6 +20,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CONDITION_BUNDLE_KEY = "CBK";
+
+    public void setCondition_bundle(Bundle condition_bundle) {
+        this.condition_bundle = condition_bundle;
+    }
+
+    public void setAction_bundle(Bundle action_bundle) {
+        this.action_bundle = action_bundle;
+    }
+
     private Bundle condition_bundle = null;
     public static final String ACTION_BUNDLE_KEY = "ABK";
     private Bundle action_bundle = null;

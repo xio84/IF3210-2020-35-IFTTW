@@ -32,9 +32,21 @@ public class RoutineListFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_routine_list, container, false);
-        recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
         parent = (MainActivity) getActivity();
+        refreshList();
+        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        parent = (MainActivity) getActivity();
+        refreshList();
+    }
+
+    private void refreshList() {
         if (parent != null) {
+            recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
             routines = parent.getListRoutine();
             // Recycler View
             BookmarkAdapter adapter = new BookmarkAdapter(getContext(), routines);
@@ -45,6 +57,5 @@ public class RoutineListFragment extends Fragment {
             recyclerView.addItemDecoration(decoration);
             recyclerView.setAdapter(adapter);
         }
-        return root;
     }
 }

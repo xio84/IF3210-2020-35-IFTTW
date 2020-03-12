@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pbd.ifttw.MainActivity;
@@ -72,7 +74,7 @@ public class NewRoutineFragment extends Fragment {
             }
         });
         parent = (MainActivity) getActivity();
-        setButtonText(parent);
+        setButtonText();
         return root;
     }
 
@@ -80,7 +82,7 @@ public class NewRoutineFragment extends Fragment {
     public void onResume() {
         super.onResume();
         parent = (MainActivity) getActivity();
-        setButtonText(parent);
+        setButtonText();
     }
 
     private void launchNewConditionModuleActivity(@Nullable View view) {
@@ -103,7 +105,7 @@ public class NewRoutineFragment extends Fragment {
         }
     }
 
-    private void setButtonText(@Nullable MainActivity parent) {
+    private void setButtonText() {
         // Set text of main activity
         if (parent != null) {
             // Handle THIS button text
@@ -129,6 +131,8 @@ public class NewRoutineFragment extends Fragment {
                         thisButton.setText(valString);
                     }
                 }
+            } else {
+                thisButton.setText(R.string.new_routine_button1_text);
             }
             // Handle WHAT Button
             Bundle action_bundle = parent.getAction_bundle();
@@ -153,6 +157,8 @@ public class NewRoutineFragment extends Fragment {
                         whatButton.setText(valString);
                     }
                 }
+            } else {
+                whatButton.setText(R.string.new_routine_button2_text);
             }
         } else {
             Log.d("New Routine Fragment", "Parent is Null!");
@@ -172,6 +178,13 @@ public class NewRoutineFragment extends Fragment {
             if (condition_type.equals("proximity")) {
                 addSensorAlarmManager(v, newIndex);
                 db.addRoutine(new Routine(newIndex.toString(), name, condition_type, condition_value, action_type, action_value));
+                // Routine created notification
+                Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
+                // Clear all text
+                name_input.setText(null, TextView.BufferType.EDITABLE);
+                parent.setCondition_bundle(null);
+                parent.setAction_bundle(null);
+                setButtonText();
             }
 
         }
