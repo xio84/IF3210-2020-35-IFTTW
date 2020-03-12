@@ -174,17 +174,21 @@ public class NewRoutineFragment extends Fragment {
         ) {
             SQLiteRoutineDatabaseHelper db = parent.getDb();
             List<Routine> routineList = parent.getListRoutine();
-            Integer newIndex = Integer.parseInt(routineList.get(routineList.size()-1).getId()) + 1;
+            int newIndex;
+            if (routineList.size() == 0) {
+                newIndex = 0;
+            } else {
+                newIndex = Integer.parseInt(routineList.get(routineList.size()-1).getId()) + 1;
+            }
             if (condition_type.equals("proximity")) {
                 addSensorAlarmManager(v, newIndex);
-                db.addRoutine(new Routine(newIndex.toString(), name, condition_type, condition_value, action_type, action_value));
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
                 // Routine created notification
                 Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
-                // Clear all text
-                name_input.setText(null, TextView.BufferType.EDITABLE);
-                parent.setCondition_bundle(null);
-                parent.setAction_bundle(null);
-                setButtonText();
+                // Refresh activity
+                Intent intent = parent.getIntent();
+                parent.finish();
+                startActivity(intent);
             }
 
         }
