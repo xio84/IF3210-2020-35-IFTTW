@@ -214,12 +214,6 @@ public class NewRoutineFragment extends Fragment {
                         action_value = action_bundle.getString(ACTION_VALUE, "NONE");
                         whatButton.setText(action_value);
                     }
-
-                    if (action_type.equals("api")) {
-                        String valString;
-                        action_value = action_bundle.getString(ACTION_VALUE, "NONE");
-                        whatButton.setText("API");
-                    }
                 }
             } else {
                 whatButton.setText(R.string.new_routine_button2_text);
@@ -317,18 +311,6 @@ public class NewRoutineFragment extends Fragment {
                 // start the service
                 scheduler.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, scheduledIntent);
             }
-            if (action_type.equals("api")) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), SensorBackgroundService.class);
-                intent.putExtras(args);
-                // try getting interval option
-                long interval;
-                interval = 1000L;
-
-                PendingIntent scheduledIntent = PendingIntent.getService(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // start the service
-                scheduler.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, scheduledIntent);
-            }
         }
     }
 
@@ -358,19 +340,6 @@ public class NewRoutineFragment extends Fragment {
                 scheduler.set(AlarmManager.RTC, triggerMilis, scheduledIntent);
             }
             if (action_type.equals("notify")) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
-                intent.putExtras(args);
-                // try getting interval option
-                long interval;
-                interval = 1000L;
-
-                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // start the service
-                long triggerMilis = Long.parseLong(condition_value);
-                scheduler.set(AlarmManager.RTC, triggerMilis, scheduledIntent);
-            }
-            if (action_type.equals("api")) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
                 intent.putExtras(args);
                 // try getting interval option
@@ -414,22 +383,6 @@ public class NewRoutineFragment extends Fragment {
                 scheduler.setInexactRepeating(AlarmManager.RTC, triggerMilis, interval, scheduledIntent);
             }
             if (action_type.equals("notify") && action_value != null) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
-                intent.putExtras(args);
-                // try getting interval option
-                long interval;
-
-                String[] values = condition_value.split("R", 2);
-                interval = Long.parseLong(values[1]);
-
-                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // start the service
-                long triggerMilis = Long.parseLong(values[0]);
-                Log.d("Alarm set at", String.valueOf(triggerMilis));
-                scheduler.setInexactRepeating(AlarmManager.RTC, triggerMilis, interval, scheduledIntent);
-            }
-            if (action_type.equals("api") && action_value != null) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
                 intent.putExtras(args);
                 // try getting interval option
