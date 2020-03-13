@@ -11,20 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pbd.ifttw.MainActivity;
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.database.Routine;
 import com.pbd.ifttw.database.SQLiteRoutineDatabaseHelper;
 import com.pbd.ifttw.service.SensorBackgroundService;
+import com.pbd.ifttw.service.TimerBackgroundReceiver;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.MyViewHolder> {
+public class InactiveBookmarkAdapter extends RecyclerView.Adapter<InactiveBookmarkAdapter.MyViewHolder> {
 
     private Context context;
     private List<Routine> notesList;
@@ -37,6 +37,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.MyView
         TextView routine_action_type_text;
         TextView routine_action_value_text;
         Button delete_routine_button;
+        Button deactivate_button;
 
         MyViewHolder(View view) {
             super(view);
@@ -46,12 +47,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.MyView
             routine_condition_value_text = view.findViewById(R.id.routine_condition_value_text);
             routine_action_type_text = view.findViewById(R.id.routine_action_type_text);
             routine_action_value_text = view.findViewById(R.id.routine_action_value_text);
-            delete_routine_button = view.findViewById(R.id.delete_routine);
+            delete_routine_button = view.findViewById(R.id.delete_inactive_routine);
         }
     }
 
 
-    public BookmarkAdapter(Context context, List<Routine> notesList) {
+    public InactiveBookmarkAdapter(Context context, List<Routine> notesList) {
         this.context = context;
         this.notesList = notesList;
     }
@@ -60,7 +61,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.listview_bookmark, parent, false);
+                .inflate(R.layout.listview_bookmark_inactive, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -78,26 +79,18 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.MyView
         holder.delete_routine_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.routine_condition_type_text.getText().toString().equals("proximity")) {
-                    Log.d("Bookmark Adapter", "Deleting proximity");
-                }
-                Integer index = Integer.parseInt(holder.routine_id_text.getText().toString());
-                Intent intent = new Intent(context, SensorBackgroundService.class);
-                AlarmManager scheduler = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                PendingIntent scheduledIntent = PendingIntent.getService(context.getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                scheduler.cancel(scheduledIntent);
-                scheduledIntent.cancel();
-                Log.d("Bookmark Adapter", "Routine " + index.toString() + " deleted");
+                int index = Integer.parseInt(holder.routine_id_text.getText().toString());
+                Log.d("Bookmark Adapter", "Routine " + index + " deleted");
                 MainActivity parent = (MainActivity) context;
                 SQLiteRoutineDatabaseHelper db = parent.getDb();
                 SQLiteDatabase writableDatabase = db.getWritableDatabase();
-                writableDatabase.delete("ROUTINE", "id=?", new String[]{index.toString()});
+                writableDatabase.delete("ROUTINE", "id=?", new String[]{Integer.toString(index)});
                 writableDatabase.close();
                 notesList.remove(position);
                 notifyDataSetChanged();
             }
         });
+
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
