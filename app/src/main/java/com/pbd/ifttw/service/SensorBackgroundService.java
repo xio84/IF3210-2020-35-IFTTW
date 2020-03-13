@@ -58,14 +58,13 @@ public class SensorBackgroundService extends Service implements SensorEventListe
     public static final String KEY_THRESHOLD_MIN_VALUE = "threshold_min_value";
     public static final String KEY_THRESHOLD_MAX_VALUE = "threshold_max_value";
     public static final String KEY_LOGGING = "logging";
-    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
+    NotificationManagerCompat notificationManager;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        notificationManager = NotificationManagerCompat.from(this);
         // get sensor manager on starting the service
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
+        createNotificationChannel();
         // have a default sensor configured
         int sensorType = Sensor.TYPE_PROXIMITY;
 
@@ -119,7 +118,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("notify_me", name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
@@ -178,6 +177,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
 
         float sensorValue = event.values[0];
         Log.d(TAG, "Action type= " + action_type);
+
         if (action_type.equals("wifi")) {
             if (action_value.equals("0")) {
                 Log.d(TAG, "Near. sensorValue= " + sensorValue
@@ -202,6 +202,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
             }
         }
         if (action_type.equals("notify")) {
+            Log.d("txtt", "recip...");
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify_me")
                     .setSmallIcon(R.drawable.notification_icon)
                     .setContentTitle("NotifyME")

@@ -2,15 +2,16 @@ package com.pbd.ifttw.ui.adapter;
 
 import android.content.Context;
 
-import com.pbd.ifttw.R;
-import com.pbd.ifttw.ui.main.PlaceholderFragment;
-import com.pbd.ifttw.ui.modules.WiFiModuleFragment;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.pbd.ifttw.R;
+import com.pbd.ifttw.ui.main.PlaceholderFragment;
+import com.pbd.ifttw.ui.modules.NotifyModuleFragment;
+import com.pbd.ifttw.ui.modules.WiFiModuleFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -36,12 +37,14 @@ public class ActionModulesPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
 //        return PlaceholderFragment.newInstance(position + 1);
-        switch (position){
+        switch (position) {
             //TODO: Replace with Action Modules Fragment
+            case 0:
+                return new NotifyModuleFragment();
             case 1:
                 return new WiFiModuleFragment();
             default:
-                return PlaceholderFragment.newInstance(position+1);
+                return PlaceholderFragment.newInstance(position + 1);
         }
     }
 

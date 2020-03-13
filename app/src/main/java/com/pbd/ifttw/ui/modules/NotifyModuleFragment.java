@@ -35,6 +35,7 @@ public class NotifyModuleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 b.putString(NewRoutineFragment.ACTION_TYPE, "notify");
+                Log.println(Log.DEBUG,"txtt", notifyText.getText().toString());
                 b.putString(NewRoutineFragment.ACTION_VALUE, notifyText.getText().toString());
                 returnData(v);
             }
@@ -57,7 +58,7 @@ public class NotifyModuleFragment extends Fragment {
             parent.finish();
         } else {
             // Error happened, report!
-            Log.d("Notify Me Module","Can't find activity!");
+            Log.d("Notify Me Module", "Can't find activity!");
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.pbd.ifttw.ui.main;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pbd.ifttw.MainActivity;
@@ -205,6 +207,11 @@ public class NewRoutineFragment extends Fragment {
                         }
                         whatButton.setText(valString);
                     }
+                    if (action_type.equals("notify")) {
+                        String valString;
+                        action_value = action_bundle.getString(ACTION_VALUE, "NONE");
+                        whatButton.setText(action_value);
+                    }
                 }
             } else {
                 whatButton.setText(R.string.new_routine_button2_text);
@@ -227,7 +234,7 @@ public class NewRoutineFragment extends Fragment {
             if (routineList.size() == 0) {
                 newIndex = 0;
             } else {
-                newIndex = Integer.parseInt(routineList.get(routineList.size()-1).getId()) + 1;
+                newIndex = Integer.parseInt(routineList.get(routineList.size() - 1).getId()) + 1;
             }
             if (condition_type.equals("proximity")) {
                 addSensorAlarmManager(v, newIndex);
@@ -277,8 +284,20 @@ public class NewRoutineFragment extends Fragment {
             } else {
                 args.putFloat(SensorBackgroundService.KEY_THRESHOLD_MAX_VALUE, 7);
             }
-
+            Log.d("action_type", action_type);
             if (action_type.equals("wifi")) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SensorBackgroundService.class);
+                intent.putExtras(args);
+                // try getting interval option
+                long interval;
+                interval = 1000L;
+
+                PendingIntent scheduledIntent = PendingIntent.getService(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // start the service
+                scheduler.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, scheduledIntent);
+            }
+            if (action_type.equals("notify")) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), SensorBackgroundService.class);
                 intent.putExtras(args);
                 // try getting interval option
