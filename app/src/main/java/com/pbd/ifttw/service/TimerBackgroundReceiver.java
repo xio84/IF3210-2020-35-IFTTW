@@ -54,6 +54,17 @@ public class TimerBackgroundReceiver extends BroadcastReceiver {
             notificationManager.notify(69, builder.build());
 
         }
+        if (action_type.equals("api")) {
+            Log.d("txtt", "recip...");
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "api")
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle("API")
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(action_value))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(70, builder.build());
+
+        }
 
     }
 }

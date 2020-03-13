@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.PlaceholderFragment;
+import com.pbd.ifttw.ui.modules.APIModuleFragment;
 import com.pbd.ifttw.ui.modules.NotifyModuleFragment;
 import com.pbd.ifttw.ui.modules.WiFiModuleFragment;
 
@@ -43,6 +44,8 @@ public class ActionModulesPagerAdapter extends FragmentPagerAdapter {
                 return new NotifyModuleFragment();
             case 1:
                 return new WiFiModuleFragment();
+            case 2:
+                return new APIModuleFragment();
             default:
                 return PlaceholderFragment.newInstance(position + 1);
         }
