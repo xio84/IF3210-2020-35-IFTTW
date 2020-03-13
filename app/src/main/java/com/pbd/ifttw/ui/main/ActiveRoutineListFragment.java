@@ -1,5 +1,6 @@
 package com.pbd.ifttw.ui.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,8 +60,14 @@ public class ActiveRoutineListFragment extends Fragment {
             }
 
             // Recycler View
+            RecyclerView.LayoutManager LayoutManager;
             ActiveBookmarkAdapter adapter = new ActiveBookmarkAdapter(getContext(), activeRoutines);
-            RecyclerView.LayoutManager LayoutManager = new LinearLayoutManager(parent.getApplicationContext());
+            if(this.getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            {
+                LayoutManager = new LinearLayoutManager(parent.getApplicationContext());
+            } else {
+                LayoutManager = new GridLayoutManager(parent.getApplicationContext(),2);
+            }
             recyclerView.setLayoutManager(LayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration decoration = new DividerItemDecoration(parent.getApplicationContext(), DividerItemDecoration.VERTICAL);
