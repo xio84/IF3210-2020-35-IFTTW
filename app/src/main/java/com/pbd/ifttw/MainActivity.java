@@ -1,12 +1,16 @@
 package com.pbd.ifttw;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CONDITION_BUNDLE_KEY = "CBK";
+    public static NotificationManagerCompat notificationManager;
 
     public void setCondition_bundle(Bundle condition_bundle) {
         this.condition_bundle = condition_bundle;
@@ -40,9 +45,27 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteRoutineDatabaseHelper db;
     private List<Routine> listRoutine = new ArrayList<Routine>();
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("notify_me", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notificationManager = NotificationManagerCompat.from(this);
+        createNotificationChannel();
 
         // Get database
         db = new SQLiteRoutineDatabaseHelper(this);

@@ -18,8 +18,11 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.pbd.ifttw.MainActivity;
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
+
+import static com.pbd.ifttw.MainActivity.notificationManager;
 
 /**
  * for a background service not linked to an activity it's important to use the command approach
@@ -58,13 +61,10 @@ public class SensorBackgroundService extends Service implements SensorEventListe
     public static final String KEY_THRESHOLD_MIN_VALUE = "threshold_min_value";
     public static final String KEY_THRESHOLD_MAX_VALUE = "threshold_max_value";
     public static final String KEY_LOGGING = "logging";
-    NotificationManagerCompat notificationManager;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        notificationManager = NotificationManagerCompat.from(this);
         // get sensor manager on starting the service
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        createNotificationChannel();
         // have a default sensor configured
         int sensorType = Sensor.TYPE_PROXIMITY;
 
@@ -112,21 +112,6 @@ public class SensorBackgroundService extends Service implements SensorEventListe
         // do nothing
     }
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("notify_me", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {

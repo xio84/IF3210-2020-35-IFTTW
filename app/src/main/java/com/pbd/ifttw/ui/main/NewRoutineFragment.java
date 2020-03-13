@@ -59,6 +59,7 @@ public class NewRoutineFragment extends Fragment {
     private View root;
     private MainActivity parent;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -90,6 +91,7 @@ public class NewRoutineFragment extends Fragment {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResume() {
         super.onResume();
@@ -337,6 +339,19 @@ public class NewRoutineFragment extends Fragment {
                 long triggerMilis = Long.parseLong(condition_value);
                 scheduler.set(AlarmManager.RTC, triggerMilis, scheduledIntent);
             }
+            if (action_type.equals("notify")) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
+                intent.putExtras(args);
+                // try getting interval option
+                long interval;
+                interval = 1000L;
+
+                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // start the service
+                long triggerMilis = Long.parseLong(condition_value);
+                scheduler.set(AlarmManager.RTC, triggerMilis, scheduledIntent);
+            }
         }
     }
 
@@ -352,6 +367,22 @@ public class NewRoutineFragment extends Fragment {
             args.putString(ACTION_VALUE, action_value);
 
             if (action_type.equals("wifi") && action_value != null) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
+                intent.putExtras(args);
+                // try getting interval option
+                long interval;
+
+                String[] values = condition_value.split("R", 2);
+                interval = Long.parseLong(values[1]);
+
+                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // start the service
+                long triggerMilis = Long.parseLong(values[0]);
+                Log.d("Alarm set at", String.valueOf(triggerMilis));
+                scheduler.setInexactRepeating(AlarmManager.RTC, triggerMilis, interval, scheduledIntent);
+            }
+            if (action_type.equals("notify") && action_value != null) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
                 intent.putExtras(args);
                 // try getting interval option

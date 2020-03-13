@@ -7,14 +7,18 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
+
+import static com.pbd.ifttw.MainActivity.notificationManager;
 
 public class TimerBackgroundReceiver extends BroadcastReceiver {
     private static final String TAG = TimerBackgroundReceiver.class.getSimpleName();
     private Bundle args;
     private String action_type, action_value;
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,6 +42,17 @@ public class TimerBackgroundReceiver extends BroadcastReceiver {
                 WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
                 wifi.setWifiEnabled(true);
             }
+        }
+        if (action_type.equals("notify")) {
+            Log.d("txtt", "recip...");
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notify_me")
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle("NotifyME")
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(action_value))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(69, builder.build());
+
         }
 
     }
