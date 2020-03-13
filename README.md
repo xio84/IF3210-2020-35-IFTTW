@@ -5,7 +5,7 @@
 
 --------------------------
 # Deskripsi Aplikasi
-Aplikasi IFTTW ini akan menerima sebuah kondisi yang berupa dalam bentuk waktu, nilai sensor, atau kecerahan cuaca melalui OpenAPI. Jika kondisi tersebut terpenuhi, sebuah aksi yang ditentukan pengguna akan dijalankan. Aksi ini dapat berupa sebuah notifikasi atau pengubahan status WiFi.
+Aplikasi IFTTW ini akan menerima sebuah kondisi yang berupa dalam bentuk waktu, nilai sensor, dsb. Jika kondisi tersebut terpenuhi, sebuah aksi yang ditentukan pengguna akan dijalankan. Aksi ini dapat berupa sebuah notifikasi atau pengubahan status WiFi.
 
 # Cara Kerja Aplikasi & Pemenuhan Spesifikasi
 ## Cara kerja
