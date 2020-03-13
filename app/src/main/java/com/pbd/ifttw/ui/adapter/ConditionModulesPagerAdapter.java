@@ -5,6 +5,7 @@ import android.content.Context;
 import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.PlaceholderFragment;
 import com.pbd.ifttw.ui.modules.SensorsModuleFragment;
+import com.pbd.ifttw.ui.modules.TimerModuleFragment;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -38,6 +39,8 @@ public class ConditionModulesPagerAdapter extends FragmentPagerAdapter {
 //        return PlaceholderFragment.newInstance(position + 1);
         switch (position){
             //TODO: Replace with Condition Modules Fragment
+            case 0:
+                return new TimerModuleFragment();
             case 1:
                 return new SensorsModuleFragment();
             default:

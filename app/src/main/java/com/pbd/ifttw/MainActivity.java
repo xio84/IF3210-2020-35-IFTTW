@@ -52,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Set THIS & WHAT button text
         if (savedInstanceState != null) {
+            Log.d("Main Activity", "savedInstanceState is not null");
             condition_bundle = savedInstanceState.getBundle(CONDITION_BUNDLE_KEY);
-            condition_bundle = savedInstanceState.getBundle(ACTION_BUNDLE_KEY);
+            action_bundle = savedInstanceState.getBundle(ACTION_BUNDLE_KEY);
         } else {
             Log.d("Main Activity", "savedInstanceState is null");
         }

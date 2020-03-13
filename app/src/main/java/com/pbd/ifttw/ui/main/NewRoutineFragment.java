@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.icu.util.Calendar;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +27,17 @@ import com.pbd.ifttw.R;
 import com.pbd.ifttw.database.Routine;
 import com.pbd.ifttw.database.SQLiteRoutineDatabaseHelper;
 import com.pbd.ifttw.service.SensorBackgroundService;
+import com.pbd.ifttw.service.TimerBackgroundReceiver;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 public class NewRoutineFragment extends Fragment {
@@ -105,6 +115,7 @@ public class NewRoutineFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setButtonText() {
         // Set text of main activity
         if (parent != null) {
@@ -129,6 +140,44 @@ public class NewRoutineFragment extends Fragment {
                                 valString = "SOMETHING IS WRONG";
                         }
                         thisButton.setText(valString);
+                    }
+                    // Handle once timer module
+                    if (condition_type.equals(getString(R.string.once_timer_condition_type))) {
+                        Log.d("the time is:", Long.toString(Calendar.getInstance().getTimeInMillis()));
+                        Log.d("the time is:", condition_value);
+                        String valString;
+                        condition_value = condition_bundle.getString(CONDITION_VALUE, "NONE");
+                        condition_value = Long.toString(Long.parseLong(condition_value) + Calendar.getInstance().getTimeInMillis());
+                        long millis = Long.parseLong(condition_value);
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(millis);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.US);
+//                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
+                        String dateString = dateFormat.format(cal.getTime());
+                        thisButton.setText("Time is " + dateString);
+                    }
+                    // Handle repeating timer module
+                    if (condition_type.equals(getString(R.string.repeating_timer_condition_type))) {
+                        String valString;
+                        condition_value = condition_bundle.getString(CONDITION_VALUE, "NONE");
+                        String[] values = condition_value.split("R", 2);
+                        condition_value = Long.toString(Long.parseLong(values[0]) + Calendar.getInstance().getTimeInMillis()) + "R" + values[1];
+                        values = condition_value.split("R", 2);
+                        long millisStart = Long.parseLong(values[0]);
+                        long millisInterval = Long.parseLong(values[1]);
+
+                        Calendar calStart = Calendar.getInstance();
+                        calStart.setTimeInMillis(millisStart);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.US);
+//                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
+                        String dateString = dateFormat.format(calStart.getTime());
+
+                        if (millisInterval == AlarmManager.INTERVAL_DAY) {
+
+                            thisButton.setText("Everyday from " + dateString);
+                        } else {
+                            thisButton.setText("Every week from " + dateString);
+                        }
                     }
                 }
             } else {
@@ -190,7 +239,26 @@ public class NewRoutineFragment extends Fragment {
                 parent.finish();
                 startActivity(intent);
             }
-
+            if (condition_type.equals(getString(R.string.once_timer_condition_type))) {
+                addOnceTimerAlarmManager(v, newIndex);
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
+                // Routine created notification
+                Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
+                // Refresh activity
+                Intent intent = parent.getIntent();
+                parent.finish();
+                startActivity(intent);
+            }
+            if (condition_type.equals(getString(R.string.repeating_timer_condition_type))) {
+                addRepeatingTimerAlarmManager(v, newIndex);
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
+                // Routine created notification
+                Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
+                // Refresh activity
+                Intent intent = parent.getIntent();
+                parent.finish();
+                startActivity(intent);
+            }
         }
     }
 
@@ -221,6 +289,64 @@ public class NewRoutineFragment extends Fragment {
 
                 // start the service
                 scheduler.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), interval, scheduledIntent);
+            }
+        }
+    }
+
+    private void addOnceTimerAlarmManager(View v, int index) {
+        if (getActivity() != null) {
+            // get scheduler and prepare intent
+            AlarmManager scheduler = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            // add some extras for config
+            Bundle args = new Bundle();
+            args.putString(CONDITION_TYPE, condition_type);
+            args.putString(ACTION_TYPE, action_type);
+            args.putString(CONDITION_VALUE, condition_value);
+            args.putString(ACTION_VALUE, action_value);
+
+            if (action_type.equals("wifi") && action_value != null) {
+//                Log.d("addOnceTimer", "Created");
+                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
+                intent.putExtras(args);
+                // try getting interval option
+                long interval;
+                interval = 1000L;
+
+                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // start the service
+                long triggerMilis = Long.parseLong(condition_value);
+                scheduler.set(AlarmManager.RTC, triggerMilis, scheduledIntent);
+            }
+        }
+    }
+
+    private void addRepeatingTimerAlarmManager(View v, int index) {
+        if (getActivity() != null) {
+            // get scheduler and prepare intent
+            AlarmManager scheduler = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            // add some extras for config
+            Bundle args = new Bundle();
+            args.putString(CONDITION_TYPE, condition_type);
+            args.putString(ACTION_TYPE, action_type);
+            args.putString(CONDITION_VALUE, condition_value);
+            args.putString(ACTION_VALUE, action_value);
+
+            if (action_type.equals("wifi") && action_value != null) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), TimerBackgroundReceiver.class);
+                intent.putExtras(args);
+                // try getting interval option
+                long interval;
+
+                String[] values = condition_value.split("R", 2);
+                interval = Long.parseLong(values[1]);
+
+                PendingIntent scheduledIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),index, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // start the service
+                long triggerMilis = Long.parseLong(values[0]);
+                Log.d("Alarm set at", String.valueOf(triggerMilis));
+                scheduler.setInexactRepeating(AlarmManager.RTC, triggerMilis, interval, scheduledIntent);
             }
         }
     }

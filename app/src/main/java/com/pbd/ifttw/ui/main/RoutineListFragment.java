@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +51,7 @@ public class RoutineListFragment extends Fragment {
             routines = parent.getListRoutine();
             // Recycler View
             BookmarkAdapter adapter = new BookmarkAdapter(getContext(), routines);
-            RecyclerView.LayoutManager LayoutManager = new LinearLayoutManager(parent.getApplicationContext());
+            RecyclerView.LayoutManager LayoutManager = new GridLayoutManager(parent.getApplicationContext(), 2);
             recyclerView.setLayoutManager(LayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             DividerItemDecoration decoration = new DividerItemDecoration(parent.getApplicationContext(), DividerItemDecoration.VERTICAL);
