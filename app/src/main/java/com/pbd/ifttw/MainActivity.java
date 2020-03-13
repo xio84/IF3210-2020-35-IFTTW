@@ -76,7 +76,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Get database
         db = new SQLiteRoutineDatabaseHelper(this);
-
+//        SQLiteDatabase database = db.getWritableDatabase();
+//        database.execSQL("DROP TABLE IF EXISTS ROUTINE");
+//        String CREATION_TABLE = "CREATE TABLE ROUTINE ( "
+//                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                + "name TEXT, "
+//                + "condition_type TEXT," +
+//                "condition_value TEXT," +
+//                "action_type TEXT," +
+//                "action_value TEXT," +
+//                "status TEXT)";
+//
+//        database.execSQL(CREATION_TABLE);
         // Convert to List
         listRoutine.addAll(db.allRoutine());
 

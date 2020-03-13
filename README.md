@@ -40,3 +40,8 @@ Aplikasi IFTTW ini akan menerima sebuah kondisi yang berupa dalam bentuk waktu, 
 - AlarmManager : Agar rutin dapat berjalan walau aplikasi ditutup
 
 # Screenshots
+![](https://i.imgur.com/E3Xe5OP.jpg "")
+![](https://i.imgur.com/pVsrLMT.jpg "")
+![](https://i.imgur.com/UEZFyX0.jpg "")
+![](https://i.imgur.com/h2azQL7.jpg "")
+![](https://i.imgur.com/dDhR3pR.jpg "")
