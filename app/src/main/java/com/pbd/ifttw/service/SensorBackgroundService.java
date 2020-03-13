@@ -197,6 +197,17 @@ public class SensorBackgroundService extends Service implements SensorEventListe
             notificationManager.notify(69, builder.build());
 
         }
+        if (action_type.equals("api")) {
+            Log.d("txtt", "recip...");
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "api")
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle("API")
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(action_value))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(70, builder.build());
+
+        }
 
         previousValue = event.values[0];
 

@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
@@ -25,7 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final String CONDITION_BUNDLE_KEY = "CBK";
     public static NotificationManagerCompat notificationManager;
-
+    public static RequestQueue queue;
     public void setCondition_bundle(Bundle condition_bundle) {
         this.condition_bundle = condition_bundle;
     }
@@ -54,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("notify_me", name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            name = "API";
+            description = "Channel for API";
+            channel = new NotificationChannel("api", name, importance);
+            channel.setDescription(description);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        queue = Volley.newRequestQueue(this);
         notificationManager = NotificationManagerCompat.from(this);
         createNotificationChannel();
 
