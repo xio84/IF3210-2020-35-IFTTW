@@ -1,6 +1,6 @@
 ### Kelompok 35 - IFTTW
 ### Anggota:
-- Eka Novendra W. / 13507011
+- Eka Novendra W. / 13517011
 - T. Antra Oksidian Tafly / 13517020
 
 --------------------------
