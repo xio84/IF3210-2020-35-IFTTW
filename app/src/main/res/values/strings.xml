@@ -42,5 +42,7 @@
     <string name="on">On</string>
     <string name="made_with_love"><![CDATA[Made with <3]]></string>
     <string name="delete_routine_button">Delete</string>
+    <string name="channel_name">Notify_me</string>
+    <string name="channel_description">notify channel for notify me service</string>
 
 </resources>
