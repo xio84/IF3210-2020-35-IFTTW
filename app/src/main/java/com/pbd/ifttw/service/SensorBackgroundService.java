@@ -1,5 +1,7 @@
 package com.pbd.ifttw.service;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +10,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.pbd.ifttw.R;
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
 
 /**
@@ -51,6 +58,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
     public static final String KEY_THRESHOLD_MIN_VALUE = "threshold_min_value";
     public static final String KEY_THRESHOLD_MAX_VALUE = "threshold_max_value";
     public static final String KEY_LOGGING = "logging";
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -105,6 +113,22 @@ public class SensorBackgroundService extends Service implements SensorEventListe
         // do nothing
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify_me", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
 
@@ -120,7 +144,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
             for (float value : event.values)
                 sb.append(value).append(" | ");
 
-            Log.d(TAG, "received sensor valures are: " + sb.toString()+ " and previosValue was: "+previousValue);
+            Log.d(TAG, "received sensor valures are: " + sb.toString() + " and previosValue was: " + previousValue);
         }
 
         // get the value
@@ -156,7 +180,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
         Log.d(TAG, "Action type= " + action_type);
         if (action_type.equals("wifi")) {
             if (action_value.equals("0")) {
-                Log.d(TAG,"Near. sensorValue= " + sensorValue
+                Log.d(TAG, "Near. sensorValue= " + sensorValue
                         + ", mThresholdMin= " + mThresholdMin
                         + ", mThresholdMax=" + mThresholdMax
                 );
@@ -166,7 +190,7 @@ public class SensorBackgroundService extends Service implements SensorEventListe
                     Log.d(TAG, "Proximity is triggered, turning off wifi...");
                 }
             } else {
-                Log.d(TAG,"Far. sensorValue= " + sensorValue
+                Log.d(TAG, "Far. sensorValue= " + sensorValue
                         + ", mThresholdMin= " + mThresholdMin
                         + ", mThresholdMax=" + mThresholdMax
                 );
@@ -176,6 +200,16 @@ public class SensorBackgroundService extends Service implements SensorEventListe
                     Log.d(TAG, "Proximity is triggered, turning on wifi...");
                 }
             }
+        }
+        if (action_type.equals("notify")) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify_me")
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle("NotifyME")
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(action_value))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(69, builder.build());
+
         }
 
         previousValue = event.values[0];
