@@ -22,13 +22,15 @@ public class SQLiteRoutineDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CONDITION_VALUE = "condition_value";
     private static final String KEY_ACTION_TYPE = "action_type";
     private static final String KEY_ACTION_VALUE = "action_value";
+    private static final String KEY_STATUS = "status";
 
     private static final String[] COLUMNS = { KEY_ID,
             KEY_NAME,
             KEY_CONDITION_TYPE,
             KEY_CONDITION_VALUE,
             KEY_ACTION_TYPE,
-            KEY_ACTION_VALUE
+            KEY_ACTION_VALUE,
+            KEY_STATUS
     };
 
     public SQLiteRoutineDatabaseHelper(Context context) {
@@ -43,7 +45,8 @@ public class SQLiteRoutineDatabaseHelper extends SQLiteOpenHelper {
                 + "condition_type TEXT," +
                 "condition_value TEXT," +
                 "action_type TEXT," +
-                "action_value TEXT)";
+                "action_value TEXT," +
+                "status TEXT)";
 
         db.execSQL(CREATION_TABLE);
     }
@@ -56,7 +59,7 @@ public class SQLiteRoutineDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Routine> allRoutine() {
-        List<Routine> students = new ArrayList<>();
+        List<Routine> routines = new ArrayList<>();
         String selectQuery = "SELECT  * FROM ROUTINE";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -70,12 +73,13 @@ public class SQLiteRoutineDatabaseHelper extends SQLiteOpenHelper {
                 routine.setCondition_value(cursor.getString(3));
                 routine.setAction_type(cursor.getString(4));
                 routine.setAction_value(cursor.getString(5));
-                students.add(routine);
+                routine.setStatus(cursor.getString(6));
+                routines.add(routine);
             } while (cursor.moveToNext());
         }
 
         db.close();
-        return students;
+        return routines;
     }
 
     public void addRoutine(Routine routine) {
@@ -86,7 +90,8 @@ public class SQLiteRoutineDatabaseHelper extends SQLiteOpenHelper {
                 + routine.getCondition_type() + "','"
                 + routine.getCondition_value() + "','"
                 + routine.getAction_type() + "','"
-                + routine.getAction_value() + "');");
+                + routine.getAction_value() + "','"
+                + routine.getStatus() + "');");
         db.close();
     }
 }

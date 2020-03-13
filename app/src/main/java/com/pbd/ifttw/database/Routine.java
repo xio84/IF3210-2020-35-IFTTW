@@ -8,15 +8,7 @@ public class Routine {
         this.condition_value = null;
         this.action_type = null;
         this.action_value = null;
-    }
-
-    public Routine(String id, String name, String condition_type, String condition_value, String action_type, String action_value) {
-        this.id = id;
-        this.name = name;
-        this.condition_type = condition_type;
-        this.condition_value = condition_value;
-        this.action_type = action_type;
-        this.action_value = action_value;
+        this.status = null;
     }
 
     public String getId() {
@@ -72,5 +64,26 @@ public class Routine {
     private String condition_type;
     private String condition_value;
     private String action_type;
+
+    public Routine(String id, String name, String condition_type, String condition_value, String action_type, String action_value, String status) {
+        this.id = id;
+        this.name = name;
+        this.condition_type = condition_type;
+        this.condition_value = condition_value;
+        this.action_type = action_type;
+        this.action_value = action_value;
+        this.status = status;
+    }
+
     private String action_value;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
 }

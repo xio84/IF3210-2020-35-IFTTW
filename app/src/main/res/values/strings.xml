@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">IFTTW</string>
     <string name="tab_text_1">New Routine</string>
-    <string name="tab_text_2">Routine List</string>
+    <string name="tab_text_2">Active Routine List</string>
+    <string name="tab_text_3">Inactive Routine List</string>
     <string name="action_module_name_1">Notify Me</string>
     <string name="action_module_name_2">Turn WiFi On/Off</string>
     <string name="action_module_name_3">API</string>
@@ -47,5 +48,7 @@
     <string name="once_timer_condition_type">oneTimer</string>
     <string name="repeating_timer_condition_type">repeatingTimer</string>
     <string name="set_timer">Set Timer</string>
+    <string name="deactivate">Deactivate</string>
+    <string name="activate">Activate</string>
 
 </resources>

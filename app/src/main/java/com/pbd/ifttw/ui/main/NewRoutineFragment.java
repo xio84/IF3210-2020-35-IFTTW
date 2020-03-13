@@ -246,7 +246,7 @@ public class NewRoutineFragment extends Fragment {
             }
             if (condition_type.equals("proximity")) {
                 addSensorAlarmManager(v, newIndex);
-                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value, "active"));
                 // Routine created notification
                 Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
                 // Refresh activity
@@ -256,7 +256,7 @@ public class NewRoutineFragment extends Fragment {
             }
             if (condition_type.equals(getString(R.string.once_timer_condition_type))) {
                 addOnceTimerAlarmManager(v, newIndex);
-                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value, "active"));
                 // Routine created notification
                 Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
                 // Refresh activity
@@ -266,7 +266,7 @@ public class NewRoutineFragment extends Fragment {
             }
             if (condition_type.equals(getString(R.string.repeating_timer_condition_type))) {
                 addRepeatingTimerAlarmManager(v, newIndex);
-                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value));
+                db.addRoutine(new Routine(Integer.toString(newIndex), name, condition_type, condition_value, action_type, action_value, "active"));
                 // Routine created notification
                 Toast.makeText(getContext(), name + " Created!", Toast.LENGTH_SHORT).show();
                 // Refresh activity

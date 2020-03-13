@@ -9,9 +9,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.pbd.ifttw.R;
+import com.pbd.ifttw.ui.main.InactiveRoutineListFragment;
 import com.pbd.ifttw.ui.main.NewRoutineFragment;
 import com.pbd.ifttw.ui.main.PlaceholderFragment;
-import com.pbd.ifttw.ui.main.RoutineListFragment;
+import com.pbd.ifttw.ui.main.ActiveRoutineListFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,7 +21,7 @@ import com.pbd.ifttw.ui.main.RoutineListFragment;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -37,7 +38,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new NewRoutineFragment();
             case 1:
-                return new RoutineListFragment();
+                return new ActiveRoutineListFragment();
+            case 2:
+                return new InactiveRoutineListFragment();
             default:
                 return PlaceholderFragment.newInstance(position+1);
         }
@@ -52,6 +55,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 2 total pages.
-        return 2;
+        return 3;
     }
 }
